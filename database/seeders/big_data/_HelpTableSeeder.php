@@ -1,0 +1,25 @@
+<?php
+
+namespace Database\Seeders\big_data;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class _HelpTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        //
+        // DB::table('users')->insert([
+        //     'name' => str_random(10),
+        //     'email' => str_random(10).'@gmail.com',
+        //     'password' => bcrypt('secret'),
+        // ]);
+    }
+}

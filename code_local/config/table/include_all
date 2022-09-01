@@ -1,0 +1,30 @@
+/*
+
+use hahaha\config\table\accounts as accounts;
+use hahaha\config\table\products_sign_up as products_sign_up;
+use hahaha\config\table\products as products;
+use hahaha\config\table\projects as projects;
+
+
+
+
+use hahaha\config\table\accounts as table_accounts;
+use hahaha\config\table\products_sign_up as table_products_sign_up;
+use hahaha\config\table\products as table_products;
+use hahaha\config\table\projects as table_projects;
+
+
+
+
+use hahaha\config\table\accounts as config_table_accounts;
+use hahaha\config\table\products_sign_up as config_table_products_sign_up;
+use hahaha\config\table\products as config_table_products;
+use hahaha\config\table\projects as config_table_projects;
+
+
+
+
+*/
+
+
+

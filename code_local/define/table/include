@@ -1,0 +1,45 @@
+/*
+
+use hahaha\define\table\action as action;
+use hahaha\define\table\field_type as field_type;
+use hahaha\define\table\field as field;
+use hahaha\define\table\function_ as function_;
+use hahaha\define\table\item as item;
+use hahaha\define\table\key as key;
+use hahaha\define\table\order as order;
+use hahaha\define\table\statement as statement;
+use hahaha\define\table\type as type;
+
+
+
+
+use hahaha\define\table\action as table_action;
+use hahaha\define\table\field_type as table_field_type;
+use hahaha\define\table\field as table_field;
+use hahaha\define\table\function_ as table_function;
+use hahaha\define\table\item as table_item;
+use hahaha\define\table\key as table_key;
+use hahaha\define\table\order as table_order;
+use hahaha\define\table\statement as table_statement;
+use hahaha\define\table\type as table_type;
+
+
+
+
+use hahaha\define\table\action as define_table_action;
+use hahaha\define\table\field_type as define_table_field_type;
+use hahaha\define\table\field as define_table_field;
+use hahaha\define\table\function_ as define_table_function;
+use hahaha\define\table\item as define_table_item;
+use hahaha\define\table\key as define_table_key;
+use hahaha\define\table\order as define_table_order;
+use hahaha\define\table\statement as define_table_statement;
+use hahaha\define\table\type as define_table_type;
+
+*/
+
+
+
+
+
+
