@@ -33,6 +33,9 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 
 require __DIR__.'/../vendor/autoload.php';
 
+$root = realpath(__DIR__  . "../");
+define("ROOT", $root);
+define("FILE_PUBLIC", "{$root}/public" );
 /*
 |--------------------------------------------------------------------------
 | Run The Application

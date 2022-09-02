@@ -33,6 +33,14 @@ use hahaha\define\accounts as define_accounts;
 use hahaha\define\products as define_products;
 use hahaha\define\products_sign_up as define_products_sign_up;
 use hahaha\define\projects as define_projects;
+// -----------------------------------------------------------
+use App\Models\Accounts as models_accounts;
+use App\Models\Help as models_help;
+use App\Models\Products_Sign_Up as models_products_sign_up;
+use App\Models\Products as models_products;
+use App\Models\Projects as models_projects;
+// -----------------------------------------------------------
+
 class AccountController extends BaseController
 {
     // use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -162,9 +170,9 @@ class AccountController extends BaseController
         // --------------------------------------------------------------------------
         // hahaha 初始化
         // --------------------------------------------------------------------------
-        \hahaha\application::instance()
-        ->initial()
-        ->initial_web();
+        // \hahaha\application::instance()
+        // ->initial()
+        // ->initial_web();
         // --------------------------------------------------------------------------
         //
         // --------------------------------------------------------------------------
@@ -213,14 +221,16 @@ class AccountController extends BaseController
         $from = database::ACCOUNTS;
         $where = "1 ";
         $where .= "and " . define_accounts::ID . "=" . $id;
-        $sql = "select *
-            from {$from}
-            where {$where}
-            limit 1
-        ";
+        // $sql = "select *
+        //     from {$from}
+        //     where {$where}
+        //     limit 1
+        // ";
 
-        $rows = [];
-        $pdo->Query($sql, $rows);
+        // $rows = [];
+        // $pdo->Query($sql, $rows);
+        $parameter_temp->query_builder = new models_accounts;
+        $rows = $parameter_temp->query_builder->where(define_accounts::ID, "=", $id)->get()->toArray();
 
         if(count($rows) == 1)
         {
