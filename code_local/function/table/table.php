@@ -14,8 +14,13 @@ use hahaha\define\api\code as api_code;
 use hahaha\parameter\parameter_result as parameter_result;
 use hahaha\parameter\parameter_temp as parameter_temp;
 use hahaha\define\common\common as define_common_common;
-
-        
+// -----------------------------------------------------------
+use App\Models\Accounts as models_accounts;
+use App\Models\Help as models_help;
+use App\Models\Products_Sign_Up as models_products_sign_up;
+use App\Models\Products as models_products;
+use App\Models\Projects as models_projects;
+// -----------------------------------------------------------
 /*
 
 use hahaha\api\function\table as table;
@@ -32,28 +37,20 @@ class table
 {
     use \hahaha\instance;
 
-    // ------------------------------------------------- 
+    // -------------------------------------------------
     //  base
-    // ------------------------------------------------- 
+    // -------------------------------------------------
     // table 取得
     public function get(
-        &$data, 
+        &$data,
         &$result
-    ) 
+    )
     {
-        $pdo = pdo::Instance();
         $config_table = config_table::instance();
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         $parameter_result = parameter_result::instance();
         $parameter_temp = parameter_temp::instance();
-        // ------------------------------------------------- 
-        $parameter_result->select = "";
-        $parameter_result->from = "";
-        $parameter_result->join = "";
-        $parameter_result->where = "";
-        $parameter_result->order_by = "";
-        $parameter_result->limit = "";
-        // ------------------------------------------------- 
+        // -------------------------------------------------
 
         if(!isset($config_table->table->mapping[
             $data[
@@ -76,57 +73,22 @@ class table
         ];
 
         $table_table = "hahaha\\table\\{$table}"::instance()->initial();
-        
-        // ------------------------------------------------- 
+        $parameter_temp->query_builder = new models_accounts;
+        // -------------------------------------------------
         $table_table->get_begin($data, $result);
-        // ------------------------------------------------- 
+        // -------------------------------------------------
 
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         $table_table->get_design($data, $result);
-        // ------------------------------------------------- 
+        // -------------------------------------------------
 
-        // ------------------------------------------------- 
-        // ------------------------------------------------- 
+        // // -------------------------------------------------
 
-        // ------------------------------------------------- 
-        $select = $parameter_result->select;
-        $from = $parameter_result->from;
-        $join = $parameter_result->join;
-        $where = $parameter_result->where;
-        $order_by = $parameter_result->order_by;
-        $limit = $parameter_result->limit;
-        $search = $parameter_result->search;
-        $filter = $parameter_result->filter;
+        $total = $parameter_temp->query_builder->count();
 
-        // ------------------------------------------------- 
-        // 全部
-        // ------------------------------------------------- 
-        // $config_table->table = "";
-        // $config_table->pagination = "";
-        // ------------------------------------------------- 
-        $sql = "select count(*)
-            from {$from} 
-            where {$where} 
-        ";
-
-        $rows = [];
-        $pdo->Query($sql, $rows);
-        // ------------------------------------------------- 
-        // ------------------------------------------------- 
-        if($rows && $rows[0] === 0) 
-        {
-            $result = [
-                table_key::RESULT => api_result::SUCCESS,
-                table_key::CODE => api_code::CODE_200,
-                table_key::MESSAGE => "沒有資料",
-            ];
-            return false;
-        }
-
-        $total = floatval($rows[0]["count(*)"]);
         $count = $config_table->table->count;
         $page = $data[table_key::PAGE];
-        if($total % $count == 0) 
+        if($total % $count == 0)
         {
             $page_count = $total / $count;
         }
@@ -135,23 +97,15 @@ class table
             $page_count = ceil($total / $count);
         }
 
-        $offset = ($page - 1) * $count; 
+        $offset = ($page - 1) * $count;
 
-        // ------------------------------------------------- 
-        $sql = "select {$select} 
-            from {$from} 
-            where {$where} 
-            limit {$count} 
-            offset {$offset} 
-        ";
+        // -------------------------------------------------
 
-        $rows = [];
-        $pdo->Query($sql, $rows);
-        // ------------------------------------------------- 
-
-        // ------------------------------------------------- 
+        // -------------------------------------------------
+        $rows = $parameter_temp->query_builder->offset($offset)->limit($count)->get()->toArray();
+        // -------------------------------------------------
         $table_table->get_end($data, $rows);
-        // ------------------------------------------------- 
+        // -------------------------------------------------
 
         $result = [
             table_key::RESULT => api_result::SUCCESS,
@@ -161,29 +115,30 @@ class table
                 table_key::PAGE => &$page,
                 table_key::COUNT => &$count,
                 table_key::TOTAL => &$total,
-                table_key::PAGE_COUNT => &$page_count, 
+                table_key::PAGE_COUNT => &$page_count,
                 table_key::DATA => &$rows,
             ],
-            
+
         ];
+
         return true;
-    
+
     }
 
     // table 新增
     public function add(
-        &$data, 
+        &$data,
         &$result
-    ) 
+    )
     {
         $pdo = pdo::Instance();
         $config_table = config_table::instance();
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         $parameter_result = parameter_result::instance();
         $parameter_temp = parameter_temp::instance();
-        // ------------------------------------------------- 
-      
-        
+        // -------------------------------------------------
+
+
 
         if(!isset($config_table->table->mapping[
             $data[
@@ -206,38 +161,25 @@ class table
         ];
 
         $table_table = "hahaha\\table\\{$table}"::instance()->initial();
-        
-        // ------------------------------------------------- 
+        $parameter_temp->query_builder = new models_accounts;
+        // -------------------------------------------------
         if(!$table_table->add_begin($data, $result))
         {
             return false;
         }
-        // ------------------------------------------------- 
+        // -------------------------------------------------
 
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         if(!$table_table->add_design($data, $result))
         {
             return false;
         }
-        // ------------------------------------------------- 
+        // -------------------------------------------------
 
-        // ------------------------------------------------- 
-        $insert_into = $parameter_result->insert_into;
-        $set = $parameter_result->set;
-        $value = $parameter_result->value;
-        // $where = $parameter_result->where;
-        // $filter = $parameter_result->filter;
-        
-        // ------------------------------------------------- 
-        $sql = "insert into {$insert_into} 
-        {$set}
-        values {$value} 
-        ";
-        
-        // ------------------------------------------------- 
-        $rows = [];
-        $result = $pdo->Query($sql, $rows);
-        // ------------------------------------------------- 
+        // -------------------------------------------------
+
+        $result = true;
+        // -------------------------------------------------
         if(!$result)
         {
             $result = [
@@ -254,29 +196,29 @@ class table
             table_key::MESSAGE => "插入成功",
         ];
 
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         if(!$table_table->add_end($data, $result))
         {
             return false;
         }
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         return true;
     }
 
     // table 更新
     public function update(
-        &$data, 
+        &$data,
         &$result
-    ) 
+    )
     {
         $pdo = pdo::Instance();
         $config_table = config_table::instance();
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         $parameter_result = parameter_result::instance();
         $parameter_temp = parameter_temp::instance();
-        // ------------------------------------------------- 
-      
-        
+        // -------------------------------------------------
+
+
 
         if(!isset($config_table->table->mapping[
             $data[
@@ -299,38 +241,38 @@ class table
         ];
 
         $table_table = "hahaha\\table\\{$table}"::instance()->initial();
-        
-        // ------------------------------------------------- 
+        $parameter_temp->query_builder = new models_accounts;
+        // -------------------------------------------------
         if(!$table_table->update_begin($data, $result))
         {
             return false;
         }
-        // ------------------------------------------------- 
+        // -------------------------------------------------
 
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         if(!$table_table->update_design($data, $result))
         {
             return false;
         }
-        // ------------------------------------------------- 
+        // -------------------------------------------------
 
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         $update = $parameter_result->update;
         $set = $parameter_result->set;
         // $value = $parameter_result->value;
         $where = $parameter_result->where;
         // $filter = $parameter_result->filter;
-        
-        // ------------------------------------------------- 
-        $sql = "update {$update} 
+
+        // -------------------------------------------------
+        $sql = "update {$update}
         set {$set}
-        where {$where} 
+        where {$where}
         ";
-        
-        // ------------------------------------------------- 
+
+        // -------------------------------------------------
         $rows = [];
         $result = $pdo->Query($sql, $rows);
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         if(!$result)
         {
             $result = [
@@ -347,25 +289,28 @@ class table
             table_key::MESSAGE => "更新成功",
         ];
 
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         if(!$table_table->update_end($data, $result))
         {
             return false;
         }
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         return true;
     }
 
     // table 刪除
     public function delete(
-        &$data, 
+        &$data,
         &$result
-    ) 
+    )
     {
         $pdo = pdo::Instance();
         $config_table = config_table::instance();
-      
-        
+        // -------------------------------------------------
+        $parameter_result = parameter_result::instance();
+        $parameter_temp = parameter_temp::instance();
+        // -------------------------------------------------
+
 
         if(!isset($config_table->table->mapping[
             $data[
@@ -388,29 +333,29 @@ class table
         ];
 
         $table_table = "hahaha\\table\\{$table}"::instance()->initial();
-        
-        // ------------------------------------------------- 
+        $parameter_temp->query_builder = new models_accounts;
+        // -------------------------------------------------
         $table_table->delete_begin($data, $result);
-        // ------------------------------------------------- 
+        // -------------------------------------------------
 
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         $table_table->delete_design($data, $result);
-        // ------------------------------------------------- 
+        // -------------------------------------------------
 
-        // ------------------------------------------------- 
-        // ------------------------------------------------- 
+        // -------------------------------------------------
+        // -------------------------------------------------
 
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         $table_table->delete_end($data, $result);
-        // ------------------------------------------------- 
-    
+        // -------------------------------------------------
+
     }
 
     // table 上傳 dropzone
     public function upload(
-        &$data, 
+        &$data,
         &$result
-    ) 
+    )
     {
         // 移到 public/temp/image
         // 回傳檔案資訊
@@ -422,7 +367,7 @@ class table
                 table_key::MESSAGE => "沒有檔案上傳",
                 table_key::DATA => [
                 ],
-                
+
             ];
             return true;
         }
@@ -432,9 +377,9 @@ class table
         foreach($_FILES as $key_file => $file){
             $name = $file[table_key::NAME];
             $tmp_name = $file[table_key::TMP_NAME];
-            // ------------------------------------------------- 
+            // -------------------------------------------------
             $temp = FILE_PUBLIC . "/temp";
-            if(!is_dir($temp)) 
+            if(!is_dir($temp))
             {
                 mkdir($temp, 0777, true);
             }
@@ -442,7 +387,7 @@ class table
             $file_target = $temp . "/" . $name;
             $url_target = URL_PUBLIC . "temp/" . $name;
 
-            if(file_exists($file_target)) 
+            if(file_exists($file_target))
             {
                 unlink($file_target);
             }
@@ -452,50 +397,50 @@ class table
                 table_key::NAME => $name,
                 table_key::URL => $url_target,
             ];
-            // ------------------------------------------------- 
-          
+            // -------------------------------------------------
+
         }
-        
+
         $result = [
             table_key::RESULT => api_result::SUCCESS,
             table_key::CODE => api_code::CODE_200,
             table_key::MESSAGE => "上傳成功",
             table_key::DATA => &$data,
-            
+
         ];
         return true;
 
 
         // $table_table = "hahaha\\table\\{$table}"::instance()->initial();
-        
-        // // ------------------------------------------------- 
+
+        // // -------------------------------------------------
         // $table_table->upload_begin($data, $result);
-        // // ------------------------------------------------- 
+        // // -------------------------------------------------
 
-        // // ------------------------------------------------- 
+        // // -------------------------------------------------
         // $table_table->upload_design($data, $result);
-        // // ------------------------------------------------- 
+        // // -------------------------------------------------
 
-        // // ------------------------------------------------- 
-        // // ------------------------------------------------- 
+        // // -------------------------------------------------
+        // // -------------------------------------------------
 
-        // // ------------------------------------------------- 
+        // // -------------------------------------------------
         // $table_table->upload_end($data, $result);
-        // // ------------------------------------------------- 
-    
+        // // -------------------------------------------------
+
     }
 
-    // ------------------------------------------------- 
-    //  
-    // ------------------------------------------------- 
+    // -------------------------------------------------
+    //
+    // -------------------------------------------------
 
 
-    // ------------------------------------------------- 
-    //  
-    // ------------------------------------------------- 
+    // -------------------------------------------------
+    //
+    // -------------------------------------------------
 
-    // ------------------------------------------------- 
-    //  
-    // ------------------------------------------------- 
-    
+    // -------------------------------------------------
+    //
+    // -------------------------------------------------
+
 }

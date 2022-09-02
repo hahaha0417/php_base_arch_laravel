@@ -7,21 +7,27 @@ use hahahalib\pdo as pdo;
 use hahaha\config\table as config_table;
 use hahaha\define\key as define_key;
 use hahaha\define\table\key as table_key;
-// ----------------------------------------- 
+// -----------------------------------------
 use hahaha\define\database as database;
-// ----------------------------------------- 
+// -----------------------------------------
 use hahaha\define\accounts as define_accounts;
 use hahaha\define\products as define_products;
 use hahaha\define\products_sign_up as define_products_sign_up;
 use hahaha\define\projects as define_projects;
-// ----------------------------------------- 
+// -----------------------------------------
 //
 use hahaha\define\api\result as api_result;
 use hahaha\define\api\code as api_code;
 use hahaha\parameter\parameter_result as parameter_result;
 use hahaha\parameter\parameter_temp as parameter_temp;
 use hahaha\define\common\common as define_common_common;
-
+// -----------------------------------------------------------
+use App\Models\Accounts as models_accounts;
+use App\Models\Help as models_help;
+use App\Models\Products_Sign_Up as models_products_sign_up;
+use App\Models\Products as models_products;
+use App\Models\Projects as models_projects;
+// -----------------------------------------------------------
 
 /*
 
@@ -35,9 +41,9 @@ class accounts extends base_table_table
     use \hahaha\instance;
     use \hahaha\table\trait\accounts;
 
-    // ----------------------------------------- 
+    // -----------------------------------------
     //  欄位更名
-    // ----------------------------------------- 
+    // -----------------------------------------
     public $mapping = [
         database::ACCOUNTS => [
             table_key::DATABASE => database::ACCOUNTS,
@@ -54,53 +60,45 @@ class accounts extends base_table_table
             ],
         ],
     ];
-    
-    
-    
-    
-    
 
-    // ----------------------------------------- 
-    //  
-    // ----------------------------------------- 
+
+
+
+
+
+    // -----------------------------------------
+    //
+    // -----------------------------------------
     public function initial()
     {
         return $this;
 
     }
 
-    // ----------------------------------------- 
-    //  
-    // ----------------------------------------- 
+    // -----------------------------------------
+    //
+    // -----------------------------------------
 
-    // ----------------------------------------- 
-    //  
-    // ----------------------------------------- 
+    // -----------------------------------------
+    //
+    // -----------------------------------------
     // 取得
-    // ----------------------- 
+    // -----------------------
     public function get_begin(
-        &$data, 
+        &$data,
         &$result
     ) {
         $pdo = pdo::Instance();
         $config_table = config_table::instance();
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         $parameter_result = parameter_result::instance();
         $parameter_temp = parameter_temp::instance();
-        // ------------------------------------------------- 
-        $select = "";
-        $from = "";
-        $join = "";
-        $where = "";
-        $order_by = "";
-        $limit = "";
-        $search = "";
-        $filter = "";
+        // -------------------------------------------------
 
         // ------------------------
         // select
         // ------------------------
-        if(!isset($this->mapping[database::ACCOUNTS][table_key::FIELD])) 
+        if(!isset($this->mapping[database::ACCOUNTS][table_key::FIELD]))
         {
             return false;
         }
@@ -110,42 +108,15 @@ class accounts extends base_table_table
         {
 
         }
-        else 
+        else
         {
 
         }
-        foreach($this->mapping[database::ACCOUNTS][table_key::FIELD] as $key_field => &$value_field)
-        {
-            if(empty($value_field))
-            {
-                if($first)
-                {
-                    $select .= "{$key_field}";
-                    $first = false;
-                }
-                else
-                {
-                    $select .= ", {$key_field}";
-                }
-            }
-            else 
-            {
-                if($first)
-                {
-                    $select .= "{$key_field} as {$value_field}";
-                    $first = false;
-                }
-                else
-                {
-                    $select .= ", {$key_field} as {$value_field}";
-                }
-            }
-        }
+
 
         // ------------------------
         // from
         // ------------------------
-        $from = "{$this->mapping[database::ACCOUNTS][table_key::DATABASE]}";
 
         // ------------------------
         // join
@@ -155,7 +126,7 @@ class accounts extends base_table_table
         // ------------------------
         // where
         // ------------------------
-        $where = "1 ";
+
         // ------------------------
         // filter
         // ------------------------
@@ -166,11 +137,11 @@ class accounts extends base_table_table
 
         $data_searchs = &$data[table_key::SEARCHS];
         $search = "";
-       
-        foreach($data_searchs as $data_key => $data_search) 
+
+        foreach($data_searchs as $data_key => $data_search)
         {
             $this->search($search, $data_key, $data_search, $data, $result);
-        
+
         }
 
         // ------------------------
@@ -178,50 +149,47 @@ class accounts extends base_table_table
         // ------------------------
 
 
-        // ------------------------------------------------- 
-        $parameter_result->select = &$select;
-        $parameter_result->from = &$from;
-        $parameter_result->join = "";
-        $parameter_result->where = $where . $search;
-        $parameter_result->order_by = "";
-        $parameter_result->limit = "";
-        $parameter_result->search = "";
-        $parameter_result->filter = "";
-        // ------------------------------------------------- 
+        // -------------------------------------------------
+
+        // -------------------------------------------------
     }
 
     public function get_design(
-        &$data, 
+        &$data,
         &$result
     ) {
         $rrr = 0;
     }
 
     public function get_end(
-        &$data, 
+        &$data,
         &$result
     ) {
         // 手動加入 select
-   
+        foreach($result as $key => $data) {
+            $result[$key][define_accounts::CREATED_AT] = date("Y-m-d H:i:s", strtotime($result[$key][define_accounts::CREATED_AT]));
+            $result[$key][define_accounts::UPDATED_AT] = date("Y-m-d H:i:s", strtotime($result[$key][define_accounts::UPDATED_AT]));
+
+        }
     }
 
-    // ----------------------- 
-    // 新增 - 
-    // ----------------------- 
+    // -----------------------
+    // 新增 -
+    // -----------------------
     // 簡易寫，有需要再做分類器同時處理多個表，前端欄位會記錄是哪個表，這裡目前沒做
     public function add_begin(
-        &$data, 
+        &$data,
         &$result
     ) {
         $pdo = pdo::Instance();
         $config_table = config_table::instance();
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         $parameter_result = parameter_result::instance();
         $parameter_temp = parameter_temp::instance();
-        // ------------------------------------------------- 
+        // -------------------------------------------------
 
         $data_data = &$data[table_key::DATA];
-        if(empty($data_data[define_accounts::EMAIL])) 
+        if(empty($data_data[define_accounts::EMAIL]))
         {
             $result = [
                 table_key::RESULT => api_result::FAILURE,
@@ -234,14 +202,15 @@ class accounts extends base_table_table
         // -------------------------------------------------
         $table = database::ACCOUNTS;
         $email = define_accounts::EMAIL;
-        $sql = "select {$email} from `{$table}`
-            where `$email` = '{$data_data[define_accounts::EMAIL]}'";
-        
-        // ------------------------------------------------- 
+        // $sql = "select {$email} from `{$table}`
+        //     where `$email` = '{$data_data[define_accounts::EMAIL]}'";
+        $parameter_temp->query_builder = $parameter_temp->query_builder->select(define_accounts::EMAIL)->where(define_accounts::EMAIL, "=", $data_data[define_accounts::EMAIL]);
+        // -------------------------------------------------
         $rows = [];
-        $result = $pdo->Query($sql, $rows);
-        // ------------------------------------------------- 
-        if(!empty($rows)) 
+        // $result = $pdo->Query($sql, $rows);
+        $rows = $parameter_temp->query_builder->first();
+        // -------------------------------------------------
+        if(!empty($rows))
         {
             $result = [
                 table_key::RESULT => api_result::FAILURE,
@@ -270,9 +239,9 @@ class accounts extends base_table_table
         // ------------------------
         foreach($data_data as $key => &$item)
         {
-            if($key == define_accounts::IMAGE && !empty($data_data[$key])) 
+            if($key == define_accounts::IMAGE && !empty($data_data[$key]))
             {
-                foreach ($item as $key_item => &$item_item) 
+                foreach ($item as $key_item => &$item_item)
                 {
                     $url = $item_item[table_key::URL];
                     $name = $item_item[table_key::NAME];
@@ -298,128 +267,57 @@ class accounts extends base_table_table
                 // 處理路徑即可
                 $data_data[$key] = json_encode($item, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
             }
-            
+
         }
         // ------------------------
         // set
         // ------------------------
-        $keys_data = array_keys($data_data);
-        foreach($keys_data as $key => &$item)
-        {
-            $keys_data[$key] = "`" . $keys_data[$key] . "`";
+        $parameter_temp->insert_builder = new models_accounts;
+        foreach($data_data as $key => &$item) {
+            $parameter_temp->insert_builder->{$key} = $item;
         }
-        // 
-        $set = implode(", ",$keys_data);
-        $set = "(" . $set . ")";
-
-        // ------------------------
-        // value
-        // ------------------------
-        $values_data = array_values($data_data);
-        foreach($values_data as $value => &$item_value)
-        {
-            $values_data[$value] = "'" . $values_data[$value] . "'";
-        }
-        // 
-        $value = implode(", ",$values_data);
-        $value = "(" . $value . ")";
-
-        // ------------------------
-        // where
-        // ------------------------
-        // $where = "1";
-        // filter
-        // 
-
-        // ------------------------------------------------- 
-        $parameter_result->insert_into = &$insert_into;
-        $parameter_result->set = $set;
-        $parameter_result->value = $value;
-        // $parameter_result->where = $where;
-        // $parameter_result->filter = $filter;
-        
-        // ------------------------------------------------- 
+        $parameter_temp->insert_builder->save();
 
         return true;
     }
 
     // 簡易寫，有需要再做分類器同時處理多個表，前端欄位會記錄是哪個表，這裡目前沒做
     public function add_design(
-        &$data, 
+        &$data,
         &$result
     ) {
-        // $pdo = pdo::Instance();
-        // $config_table = config_table::instance();
-        // // ------------------------------------------------- 
-        // $parameter_result = parameter_result::instance();
-        // $parameter_temp = parameter_temp::instance();
-        // // ------------------------------------------------- 
-
-        // $insert_into = "";
-        // $set = "";
-        // $where = "";
-        // $filter = "";
-
- 
-
-        // // ------------------------
-        // // insert_into
-        // // ------------------------
-        // $insert_into = "{$this->mapping[database::ACCOUNTS][table_key::DATABASE]}";
-
-        // // ------------------------
-        // // set
-        // // ------------------------
-
-
-        // // ------------------------
-        // // where
-        // // ------------------------
-        // $where = "1";
-
-        // // filter
-
-
-        // // 
 
 
 
-
-        // // ------------------------------------------------- 
-        // $parameter_result->insert_into = &$insert_into;
-        // $parameter_result->set = $set;
-        // $parameter_result->where = $where;
-        // $parameter_result->filter = $filter;
-        
-        // // ------------------------------------------------- 
+        // -------------------------------------------------
         return true;
     }
 
     // 簡易寫，有需要再做分類器同時處理多個表，前端欄位會記錄是哪個表，這裡目前沒做
     public function add_end(
-        &$data, 
+        &$data,
         &$result
     ) {
         return true;
     }
 
-    // ----------------------- 
+    // -----------------------
     // 更新
-    // ----------------------- 
+    // -----------------------
     // 簡易寫，有需要再做分類器同時處理多個表，前端欄位會記錄是哪個表，這裡目前沒做
     public function update_begin(
-        &$data, 
+        &$data,
         &$result
     ) {
         $pdo = pdo::Instance();
         $config_table = config_table::instance();
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         $parameter_result = parameter_result::instance();
         $parameter_temp = parameter_temp::instance();
-        // ------------------------------------------------- 
+        // -------------------------------------------------
 
         $data_data = &$data[table_key::DATA];
-        if(empty($data_data[define_accounts::EMAIL])) 
+        if(empty($data_data[define_accounts::EMAIL]))
         {
             $result = [
                 table_key::RESULT => api_result::FAILURE,
@@ -432,14 +330,18 @@ class accounts extends base_table_table
         // -------------------------------------------------
         $table = database::ACCOUNTS;
         $email = define_accounts::EMAIL;
-        $sql = "select {$email} from `{$table}`
-            where `$email` = '{$data_data[define_accounts::EMAIL]}'";
-        
-        // ------------------------------------------------- 
+        // $sql = "select {$email} from `{$table}`
+        //     where `$email` = '{$data_data[define_accounts::EMAIL]}'";
+        $parameter_temp->query_builder = $parameter_temp->query_builder->select(define_accounts::EMAIL)->where(define_accounts::EMAIL, "=", $data_data[define_accounts::EMAIL]);
+        // -------------------------------------------------
         $rows = [];
-        $result = $pdo->Query($sql, $rows);
-        // ------------------------------------------------- 
-        if(empty($rows)) 
+        // $result = $pdo->Query($sql, $rows);
+        $rows = $parameter_temp->query_builder->first();
+        // -------------------------------------------------
+        // $rows = [];
+        // $result = $pdo->Query($sql, $rows);
+        // -------------------------------------------------
+        if(empty($rows))
         {
             $result = [
                 table_key::RESULT => api_result::FAILURE,
@@ -467,9 +369,9 @@ class accounts extends base_table_table
         // ------------------------
         foreach($data_data as $key => &$item)
         {
-            if($key == define_accounts::IMAGE && !empty($data_data[$key])) 
+            if($key == define_accounts::IMAGE && !empty($data_data[$key]))
             {
-                foreach ($item as $key_item => &$item_item) 
+                foreach ($item as $key_item => &$item_item)
                 {
                     $url = $item_item[table_key::URL];
                     $name = $item_item[table_key::NAME];
@@ -495,50 +397,25 @@ class accounts extends base_table_table
                 // 處理路徑即可
                 $data_data[$key] = json_encode($item, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
             }
-            
-        }
-        // ------------------------
-        // set
-        // ------------------------
-        $set = " ";
-        $first = true;
-        foreach($data_data as $key => &$item)
-        {
-            if($first)
-            {
-                $first = false;
-            }
-            else {
-                $set .= ", ";
-            }
-            $set .= "`" . $key . "`" . "=" . "'" . $item . "'";
-        }
-        // 
-        
 
-        // ------------------------
-        // where
-        // ------------------------
-        $where .= "1 ";
-        $where .= "and `{$email}`='{$data_data[define_accounts::EMAIL]}' ";
-        // filter
-        // 
+        }
 
-        // ------------------------------------------------- 
-        $parameter_result->update = &$update;
-        $parameter_result->set = $set;
-        // $parameter_result->value = $value;
-        $parameter_result->where = $where;
-        // $parameter_result->filter = $filter;
-        
-        // ------------------------------------------------- 
+
+
+
+        // -------------------------------------------------
+        $parameter_temp->query_builder = $parameter_temp->query_builder->where(define_accounts::EMAIL, "=", $data_data[define_accounts::EMAIL])->first();
+        foreach($data_data as $key => &$item) {
+            $parameter_temp->query_builder->{$key} = $item;
+        }
+        $parameter_temp->query_builder->save();
 
         return true;
     }
 
     // 簡易寫，有需要再做分類器同時處理多個表，前端欄位會記錄是哪個表，這裡目前沒做
     public function update_design(
-        &$data, 
+        &$data,
         &$result
     ) {
         return true;
@@ -546,25 +423,25 @@ class accounts extends base_table_table
 
     // 簡易寫，有需要再做分類器同時處理多個表，前端欄位會記錄是哪個表，這裡目前沒做
     public function update_end(
-        &$data, 
+        &$data,
         &$result
     ) {
         return true;
     }
 
-    // ----------------------- 
+    // -----------------------
     // 刪除
-    // ----------------------- 
+    // -----------------------
     public function delete_begin(
-        &$data, 
+        &$data,
         &$result
     ) {
         $pdo = pdo::Instance();
         $config_table = config_table::instance();
-        // ------------------------------------------------- 
+        // -------------------------------------------------
         $parameter_result = parameter_result::instance();
         $parameter_temp = parameter_temp::instance();
-        // ------------------------------------------------- 
+        // -------------------------------------------------
 
         $ids = $data[table_key::DATA][table_key::IDS];
 
@@ -582,30 +459,32 @@ class accounts extends base_table_table
             $str .= $item;
             // $str .= "'" . $item . "'";
         }
-        // 
-        
-        
-        // -------------------------------------------------
-        $table = database::ACCOUNTS;
-        $email = define_accounts::EMAIL;
-        $sql = "select id, {$email} from `{$table}`
-            where `id` in ($str)";
-        
-        // ------------------------------------------------- 
-        $rows1 = [];
-        $result = $pdo->Query($sql, $rows1);
-        // ------------------------------------------------- 
+        //
+        $parameter_temp->insert_builder = new models_accounts;
 
         // -------------------------------------------------
         $table = database::ACCOUNTS;
         $email = define_accounts::EMAIL;
-        $sql = "delete from `{$table}`
-            where `id` in ($str)";
-        
-        // ------------------------------------------------- 
-        $rows2 = [];
-        $result = $pdo->Query($sql, $rows2);
-        // ------------------------------------------------- 
+        // $sql = "select id, {$email} from `{$table}`
+        //     where `id` in ($str)";
+
+
+        // // -------------------------------------------------
+        // $rows1 = [];
+        // $result = $pdo->Query($sql, $rows1);
+        // -------------------------------------------------
+        $rows1 = $parameter_temp->insert_builder->select(define_accounts::ID)->whereIn(define_accounts::ID, $ids)->get()->toArray();
+        // -------------------------------------------------
+        // $table = database::ACCOUNTS;
+        // $email = define_accounts::EMAIL;
+        // $sql = "delete from `{$table}`
+        //     where `id` in ($str)";
+        $parameter_temp->insert_builder->select(define_accounts::ID)->whereIn(define_accounts::ID, $ids)->delete();
+
+        // // -------------------------------------------------
+        // $rows2 = [];
+        // $result = $pdo->Query($sql, $rows2);
+        // -------------------------------------------------
         // 這裡簡單寫，用樹狀刪除，不用較快的rename
         foreach($rows1 as $key => $row1) {
             $dir_accounts = FILE_PUBLIC . "/" . "image" . "/" . table_key::ACCOUNTS . "/" . $row1[define_accounts::EMAIL];
@@ -614,58 +493,57 @@ class accounts extends base_table_table
                 $file_ = \hahahalib\file::Instance();
                 $file_->DELETE_TREE($dir_accounts);
             }
-            
+
         }
-        
-        
-
-        // ------------------------------------------------- 
 
 
-        // ------------------------------------------------- 
+        // -------------------------------------------------
+
+
+        // -------------------------------------------------
 
         return true;
     }
 
     public function delete_design(
-        &$data, 
-        &$result
-    ) {
-        return true;
-    }
-    
-    public function delete_end(
-        &$data, 
+        &$data,
         &$result
     ) {
         return true;
     }
 
-    // ----------------------- 
+    public function delete_end(
+        &$data,
+        &$result
+    ) {
+        return true;
+    }
+
+    // -----------------------
     // 上傳
-    // ----------------------- 
+    // -----------------------
     public function upload_begin(
-        &$data, 
+        &$data,
         &$result
     ) {
 
     }
 
     public function upload_design(
-        &$data, 
+        &$data,
         &$result
     ) {
 
     }
 
     public function upload_end(
-        &$data, 
+        &$data,
         &$result
     ) {
 
     }
 
-    // ----------------------------------------- 
-    //  
-    // ----------------------------------------- 
+    // -----------------------------------------
+    //
+    // -----------------------------------------
 }

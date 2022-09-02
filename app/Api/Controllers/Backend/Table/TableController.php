@@ -102,38 +102,38 @@ class TableController extends BaseController
                 // 基本
                 // -------------------------------------------------
                 // 取得數據
-                if($get[define_key::TYPE] == define_key::GET)
-                {
-                    $rrr = 0;
-                }
-                // 新增
-                else if($get[define_key::TYPE] == define_key::ADD)
-                {
-                    $rrr = 0;
-                }
-                // 更新
-                else if($get[define_key::TYPE] == define_key::UPDATE)
-                {
-                    $rrr = 0;
-                }
-                // 刪除
-                else if($get[define_key::TYPE] == define_key::DELETE)
-                {
-                    $rrr = 0;
-                }
-                // 上傳
-                else if($get[define_key::TYPE] == define_key::UPLOAD)
-                {
-                    $rrr = 0;
-                }
-                else
-                {
-                    $rrr = 0;
-                }
+                // if($get[define_key::TYPE] == define_key::GET)
+                // {
+                //     $rrr = 0;
+                // }
+                // // 新增
+                // else if($get[define_key::TYPE] == define_key::ADD)
+                // {
+                //     $rrr = 0;
+                // }
+                // // 更新
+                // else if($get[define_key::TYPE] == define_key::UPDATE)
+                // {
+                //     $rrr = 0;
+                // }
+                // // 刪除
+                // else if($get[define_key::TYPE] == define_key::DELETE)
+                // {
+                //     $rrr = 0;
+                // }
+                // // 上傳
+                // else if($get[define_key::TYPE] == define_key::UPLOAD)
+                // {
+                //     $rrr = 0;
+                // }
+                // else
+                // {
+                //     $rrr = 0;
+                // }
             }
             else
             {
-                $rrr = 0;
+                // $rrr = 0;
             }
 
         } catch (\Exception $e) {
