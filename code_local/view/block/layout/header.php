@@ -40,11 +40,11 @@ class block_header
                                 首頁
                             </a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="/backend/chart" class="nav-link px-2 text-white">
                                 圖表
                             </a>
-                        </li>
+                        </li> -->
                         <!-- <li>
                             <a href="/backend/fsm" class="nav-link px-2 text-white">
                                 有限狀態機

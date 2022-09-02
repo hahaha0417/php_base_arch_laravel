@@ -264,15 +264,16 @@ class table
         // $filter = $parameter_result->filter;
 
         // -------------------------------------------------
-        $sql = "update {$update}
-        set {$set}
-        where {$where}
-        ";
+        // $sql = "update {$update}
+        // set {$set}
+        // where {$where}
+        // ";
 
+        // // -------------------------------------------------
+        // $rows = [];
+        // $result = $pdo->Query($sql, $rows);
         // -------------------------------------------------
-        $rows = [];
-        $result = $pdo->Query($sql, $rows);
-        // -------------------------------------------------
+        $result = true;
         if(!$result)
         {
             $result = [

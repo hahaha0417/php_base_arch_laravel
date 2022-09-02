@@ -149,7 +149,8 @@ class AccountController extends BaseController
         // -----------------------------------------
         //  這樣即可，不用laravel view
         // -----------------------------------------
-        return $view_table_edit->view();
+        // return $view_table_edit->view();
+        return view('backend.account.edit');
 
     }
 
@@ -244,6 +245,6 @@ class AccountController extends BaseController
         //  這樣即可，不用laravel view
         // -----------------------------------------
         return $view_table_edit->view();
-
+        // return view('backend.account.edit');
     }
 }

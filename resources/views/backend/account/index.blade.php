@@ -33,7 +33,6 @@
     //
     use hahaha\config\common as config_common;
     use hahaha\config\ext as config_ext;
-    use hahaha\define\api as define_api;
 @endphp
 
 <x-backend.layout>
@@ -263,6 +262,29 @@
     {{-- ------------------------------------------- --}}
     {{-- ------------------------------------------- --}}
     @section('content')
+        @php
+            $view_block_sidebar = view_block_sidebar::instance()->initial();
+            $parameter = parameter::instance();
+            $common_block_single = common_block_single::instance();
+            $config_table_accounts = config_table_accounts::instance()->initial();
+
+            $view_block_sidebar = view_block_sidebar::instance()->initial();
+            $parameter = parameter::instance();
+            $common_block_single = common_block_single::instance();
+            $config_table_accounts = config_table_accounts::instance()->initial();
+            //
+            $field_dropzone = field_dropzone::instance()->initial();
+            $field_label = field_label::instance()->initial();
+            $field_select = field_select::instance()->initial();
+            $field_text = field_text::instance()->initial();
+            $field_textarea = field_textarea::instance()->initial();
+            //
+            $config_common = config_common::instance()->initial();
+            $conf_gender = &$config_common->gender;
+            //
+            $default = $config_table_accounts->default;
+            $data = &$parameter->data;
+        @endphp
         <!-- --------------------------------- -->
         <div class="row">
 
@@ -320,74 +342,74 @@
 
 
                 // 搜尋
-                $(".<?php echo table_item::BUTTON_SEARCH_MAIN; ?>").click(function() {
-                    // if(<?php echo table_item::TABLE_MAIN_SELECT_ITEM; ?> == null)
+                $(".@php echo table_item::BUTTON_SEARCH_MAIN; @endphp").click(function() {
+                    // if(@php echo table_item::TABLE_MAIN_SELECT_ITEM; @endphp == null)
                     // {
                     //     return;
                     // }
 
-                    // let id = $(<?php echo table_item::TABLE_MAIN_SELECT_ITEM; ?>).data("<?php echo table_key::ID; ?>");
+                    // let id = $(@php echo table_item::TABLE_MAIN_SELECT_ITEM; @endphp).data("@php echo table_key::ID; @endphp");
 
-                    <?php echo table_function::TABLE_LOAD_ALL; ?>();
+                    @php echo table_function::TABLE_LOAD_ALL; @endphp();
                 });
 
                 // 關閉
-                $(".<?php echo table_item::BUTTON_CLOSE_MAIN; ?>").click(function() {
-                    // if(<?php echo table_item::TABLE_MAIN_SELECT_ITEM; ?> == null)
+                $(".@php echo table_item::BUTTON_CLOSE_MAIN; @endphp").click(function() {
+                    // if(@php echo table_item::TABLE_MAIN_SELECT_ITEM; @endphp == null)
                     // {
                     //     return;
                     // }
 
-                    let id = $(<?php echo table_item::TABLE_MAIN_SELECT_ITEM; ?>).data("<?php echo table_key::ID; ?>");
+                    let id = $(@php echo table_item::TABLE_MAIN_SELECT_ITEM; @endphp).data("@php echo table_key::ID; @endphp");
 
                     window.close();
                 });
 
                 // 新增
-                $(".<?php echo table_item::BUTTON_ADD_MAIN; ?>").click(function() {
-                    // if(<?php echo table_item::TABLE_MAIN_SELECT_ITEM; ?> == null)
+                $(".@php echo table_item::BUTTON_ADD_MAIN; @endphp").click(function() {
+                    // if(@php echo table_item::TABLE_MAIN_SELECT_ITEM; @endphp == null)
                     // {
                     //     return;
                     // }
 
-                    let id = $(<?php echo table_item::TABLE_MAIN_SELECT_ITEM; ?>).data("<?php echo table_key::ID; ?>");
-                    let url = `/<?php echo table_key::BACKEND; ?>/<?php echo table_key::ACCOUNTS; ?>/<?php echo table_key::ADD; ?>`
+                    let id = $(@php echo table_item::TABLE_MAIN_SELECT_ITEM; @endphp).data("@php echo table_key::ID; @endphp");
+                    let url = `/@php echo table_key::BACKEND; @endphp/@php echo table_key::ACCOUNTS; @endphp/@php echo table_key::ADD; @endphp`
                     // location.href = url;
-                    <?php echo table_item::OPEN_WINDOW; ?> = window.open(url, "accounts_index");
+                    @php echo table_item::OPEN_WINDOW; @endphp = window.open(url, "accounts_index");
                 });
 
                 // 編輯
-                $(".<?php echo table_item::BUTTON_EDIT_MAIN; ?>").click(function() {
-                    if(<?php echo table_item::TABLE_MAIN_SELECT_ITEM; ?> == null)
+                $(".@php echo table_item::BUTTON_EDIT_MAIN; @endphp").click(function() {
+                    if(@php echo table_item::TABLE_MAIN_SELECT_ITEM; @endphp == null)
                     {
                         return;
                     }
 
-                    let id = $(<?php echo table_item::TABLE_MAIN_SELECT_ITEM; ?>).data("<?php echo table_key::ID; ?>");
+                    let id = $(@php echo table_item::TABLE_MAIN_SELECT_ITEM; @endphp).data("@php echo table_key::ID; @endphp");
 
-                    let url = `/<?php echo table_key::BACKEND; ?>/<?php echo table_key::ACCOUNTS; ?>/<?php echo table_key::ID; ?>/${id}/<?php echo table_key::EDIT; ?>`;
+                    let url = `/@php echo table_key::BACKEND; @endphp/@php echo table_key::ACCOUNTS; @endphp/@php echo table_key::ID; @endphp/${id}/@php echo table_key::EDIT; @endphp`;
                     // location.href = url;
-                    <?php echo table_item::OPEN_WINDOW; ?> = window.open(url, "accounts_index");
+                    @php echo table_item::OPEN_WINDOW; @endphp = window.open(url, "accounts_index");
                 });
 
                 // 刪除
-                $(".<?php echo table_item::BUTTON_DELETE_MAIN; ?>").click(function() {
-                    if(<?php echo table_item::TABLE_MAIN_SELECT_ITEM; ?> == null)
+                $(".@php echo table_item::BUTTON_DELETE_MAIN; @endphp").click(function() {
+                    if(@php echo table_item::TABLE_MAIN_SELECT_ITEM; @endphp == null)
                     {
                         return;
                     }
 
-                    var <?php echo table_key::IDS; ?> = [];
-                    $(".<?php echo table_key::SELECT; ?>").each(function() {
-                        if($(this).prop("<?php echo table_key::CHECKED; ?>"))
+                    var @php echo table_key::IDS; @endphp = [];
+                    $(".@php echo table_key::SELECT; @endphp").each(function() {
+                        if($(this).prop("@php echo table_key::CHECKED; @endphp"))
                         {
-                            let id = $(this).parent().parent().data("<?php echo table_key::ID; ?>");
+                            let id = $(this).parent().parent().data("@php echo table_key::ID; @endphp");
 
-                            <?php echo table_key::IDS; ?>.push(id);
+                            @php echo table_key::IDS; @endphp.push(id);
                         }
                     });
 
-                    if(<?php echo table_key::IDS; ?>.length == 0) {
+                    if(@php echo table_key::IDS; @endphp.length == 0) {
                         return false;
                     }
 
@@ -400,23 +422,23 @@
                         if (result.isConfirmed) {
 
                             let data = {  //傳送資料
-                                "<?php echo table_key::TYPE; ?>": "<?php echo table_key::DELETE; ?>",
-                                "<?php echo table_key::TABLE; ?>": "<?php echo database::ACCOUNTS; ?>",
-                                "<?php echo table_key::DATA; ?>": {
-                                    "<?php echo table_key::IDS; ?>": <?php echo table_key::IDS; ?>
+                                "@php echo table_key::TYPE; @endphp": "@php echo table_key::DELETE; @endphp",
+                                "@php echo table_key::TABLE; @endphp": "@php echo database::ACCOUNTS; @endphp",
+                                "@php echo table_key::DATA; @endphp": {
+                                    "@php echo table_key::IDS; @endphp": @php echo table_key::IDS; @endphp
                                 }
                             };
                             // https://blog.reh.tw/archives/662
                             $.ajax({
-                                type: "<?php echo table_key::POST; ?>", //傳送方式
-                                url: "<?php echo backend_api::TABLE; ?>", //傳送目的地
+                                type: "@php echo table_key::POST; @endphp", //傳送方式
+                                url: "@php echo backend_api::TABLE; @endphp", //傳送目的地
                                 cache: false,
                                 data: data,
                                 success: function(response) {
                                     let result = JSON.parse(response);
-                                    Swal.fire('刪除成功', '', '<?php table_key::SUCCESS ?>');
-                                    <?php echo table_function::TABLE_LOAD_ALL; ?>();
-                                    <?php echo table_function::UPDATE_UI; ?>();
+                                    Swal.fire('刪除成功', '', '@php table_key::SUCCESS @endphp');
+                                    @php echo table_function::TABLE_LOAD_ALL; @endphp();
+                                    @php echo table_function::UPDATE_UI; @endphp();
 
 
                                 },
@@ -430,23 +452,23 @@
                 });
 
                 // 顯示
-                $(".<?php echo table_item::BUTTON_SHOW_MAIN; ?>").click(function() {
-                    if(<?php echo table_item::TABLE_MAIN_SELECT_ITEM; ?> == null)
+                $(".@php echo table_item::BUTTON_SHOW_MAIN; @endphp").click(function() {
+                    if(@php echo table_item::TABLE_MAIN_SELECT_ITEM; @endphp == null)
                     {
                         return;
                     }
 
-                    let id = $(<?php echo table_item::TABLE_MAIN_SELECT_ITEM; ?>).data("<?php echo table_key::ID; ?>");
+                    let id = $(@php echo table_item::TABLE_MAIN_SELECT_ITEM; @endphp).data("@php echo table_key::ID; @endphp");
 
-                    let url = `/<?php echo table_key::BACKEND; ?>/<?php echo table_key::ACCOUNTS; ?>/<?php echo table_key::ID; ?>/${id}/<?php echo table_key::SHOW; ?>`;
+                    let url = `/@php echo table_key::BACKEND; @endphp/@php echo table_key::ACCOUNTS; @endphp/@php echo table_key::ID; @endphp/${id}/@php echo table_key::SHOW; @endphp`;
                     // location.href = url;
-                    <?php echo table_item::OPEN_WINDOW; ?> = window.open(url, "accounts_index");
+                    @php echo table_item::OPEN_WINDOW; @endphp = window.open(url, "accounts_index");
                 });
 
                 // https://ithelp.ithome.com.tw/articles/10268300?sc=iThelpR
-                window.addEventListener("<?php echo table_key::MESSAGE; ?>", (event) => {
+                window.addEventListener("@php echo table_key::MESSAGE; @endphp", (event) => {
                     // console.log(event.data);
-                    <?php echo table_function::TABLE_LOAD_ALL; ?>();
+                    @php echo table_function::TABLE_LOAD_ALL; @endphp();
                 }, false);
             });
 

@@ -332,7 +332,7 @@ class accounts extends base_table_table
         $email = define_accounts::EMAIL;
         // $sql = "select {$email} from `{$table}`
         //     where `$email` = '{$data_data[define_accounts::EMAIL]}'";
-        $parameter_temp->query_builder = $parameter_temp->query_builder->select(define_accounts::EMAIL)->where(define_accounts::EMAIL, "=", $data_data[define_accounts::EMAIL]);
+        $parameter_temp->query_builder = $parameter_temp->query_builder->where(define_accounts::EMAIL, "=", $data_data[define_accounts::EMAIL]);
         // -------------------------------------------------
         $rows = [];
         // $result = $pdo->Query($sql, $rows);
