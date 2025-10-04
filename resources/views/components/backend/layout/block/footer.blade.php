@@ -28,6 +28,6 @@
         </li>
     </ul>
     <p class="text-center text-muted">
-        © 2022 hahaha
+        © 2025 hahaha
     </p>
 </footer>

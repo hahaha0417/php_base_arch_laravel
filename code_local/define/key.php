@@ -42,6 +42,9 @@ class key
     const CHART = "chart";
     const FSM = "fsm";
     const CHAT = "chat";
+    const BIG_DATA = "big_data";
+    const DEMO = "demo";
+    const MIGRATE = "migrate";
     // ----------------------------------------- 
     //  
     // ----------------------------------------- 
